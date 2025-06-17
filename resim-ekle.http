@@ -1,0 +1,6 @@
+@resim_ekle_HostAddress = http://localhost:5175
+
+GET {{resim_ekle_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
