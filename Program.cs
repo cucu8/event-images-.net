@@ -4,7 +4,7 @@ using QrImageUploader.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<DataContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("postgresConnection")));
 
 builder.Services.AddCors();
 builder.Services.AddControllers();

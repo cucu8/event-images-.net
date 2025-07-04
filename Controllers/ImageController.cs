@@ -54,7 +54,7 @@ namespace resim_ekle.Controllers
 
 
         [HttpPost("upload")]
-        public async Task<IActionResult> UploadImages([FromForm] int userId, [FromForm] List<IFormFile> files)
+        public async Task<IActionResult> UploadImages([FromForm] Guid userId, [FromForm] List<IFormFile> files)
         {
             if (files == null || files.Count == 0)
             {

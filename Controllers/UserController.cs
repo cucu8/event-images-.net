@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Primitives;
 using QrImageUploader.Data;
 using resim_ekle.Entities;
 using System;
@@ -11,25 +12,18 @@ namespace resim_ekle.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly DataContext _context;
 
-        public UserController(DataContext context)
+        private readonly DataContext _context;
+        private readonly IConfiguration _config;
+
+        public UserController(DataContext context, IConfiguration config)
         {
             _context = context;
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetAllUsers()
-        {
-            var users = await _context.Users
-                .Select(u => new { u.Id, u.Name })
-                .ToListAsync();
-
-            return Ok(users);
+            _config = config;
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUserById(int id)
+        public async Task<IActionResult> GetUserById(Guid id)
         {
             var user = await _context.Users.FindAsync(id);
 
@@ -41,23 +35,5 @@ namespace resim_ekle.Controllers
             return Ok(new { user.Id, user.Name });
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] CreateUserDto dto)
-        {
-            if (string.IsNullOrWhiteSpace(dto.Name))
-            {
-                return BadRequest("Kullanıcı adı boş olamaz.");
-            }
-
-            var user = new User
-            {
-                Name = dto.Name
-            };
-
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { user.Id, user.Name });
-        }
     }
 }

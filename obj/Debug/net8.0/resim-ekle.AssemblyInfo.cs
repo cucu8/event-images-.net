@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("resim-ekle")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b01db41d0a33e3287c420e3d193e046e92cbd93e")]
 [assembly: System.Reflection.AssemblyProductAttribute("resim-ekle")]
 [assembly: System.Reflection.AssemblyTitleAttribute("resim-ekle")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

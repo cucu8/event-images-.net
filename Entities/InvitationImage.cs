@@ -1,6 +1,6 @@
 ﻿namespace resim_ekle.Entities
 {
-    public class Image
+    public class InvitationImage
     {
         public int Id { get; set; }
         public byte[] ImageData { get; set; }
