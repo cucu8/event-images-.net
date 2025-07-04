@@ -1,10 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>resim_ekle</RootNamespace>
+    <UserSecretsId>5bc8212d-cf28-47aa-b385-6db3734ec3b2</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
