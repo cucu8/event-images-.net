@@ -13,6 +13,7 @@ namespace QrImageUploader.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<InvitationImage> InvitationImages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,6 +28,12 @@ namespace QrImageUploader.Data
                .WithMany(u => u.Comments)
                .HasForeignKey(c => c.UserId)
                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<InvitationImage>()
+                .HasOne(ii => ii.User)
+                .WithOne(u => u.Invitation)
+                .HasForeignKey<InvitationImage>(ii => ii.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(modelBuilder);
         }

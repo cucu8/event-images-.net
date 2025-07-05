@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Primitives;
 using QrImageUploader.Data;
 using resim_ekle.Entities;
+using resim_ekle.DTO;
 using System;
-using static resim_ekle.DTO.CreateUserDTO;
 
 namespace resim_ekle.Controllers
 {
@@ -33,6 +33,44 @@ namespace resim_ekle.Controllers
             }
 
             return Ok(new { user.Id, user.Name });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateUser([FromBody] CreateUserDTO.CreateUserDto createUserDto)
+        {
+            if (string.IsNullOrWhiteSpace(createUserDto.Name))
+            {
+                return BadRequest("Kullanıcı adı boş olamaz.");
+            }
+
+            var user = new User
+            {
+                Name = createUserDto.Name,
+                Role = 0, // Default role
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, new { user.Id, user.Name });
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(Guid id)
+        {
+            var user = await _context.Users.FindAsync(id);
+
+            if (user == null)
+            {
+                return NotFound("Kullanıcı bulunamadı.");
+            }
+
+            // Hard delete - Kullanıcıyı veritabanından tamamen kaldır
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+
+            return Ok("Kullanıcı veritabanından tamamen silindi.");
         }
 
     }
