@@ -49,6 +49,40 @@ namespace resim_ekle.Controllers
             return invitationImage;
         }
 
+        // GET: api/InvitationImage/user/5/image
+        [HttpGet("user/{userId}/image")]
+        public async Task<IActionResult> GetInvitationImageForDisplay(Guid userId)
+        {
+            var invitationImage = await _context.InvitationImages
+                .FirstOrDefaultAsync(ii => ii.UserId == userId);
+
+            if (invitationImage == null)
+            {
+                return NotFound("Invitation image not found for this user");
+            }
+
+            // Determine content type based on image data
+            string contentType = "image/jpeg"; // default
+            if (invitationImage.ImageData.Length > 4)
+            {
+                // Check PNG signature
+                if (invitationImage.ImageData[0] == 0x89 && invitationImage.ImageData[1] == 0x50 && 
+                    invitationImage.ImageData[2] == 0x4E && invitationImage.ImageData[3] == 0x47)
+                {
+                    contentType = "image/png";
+                }
+                // Check GIF signature
+                else if (invitationImage.ImageData[0] == 0x47 && invitationImage.ImageData[1] == 0x49 && 
+                         invitationImage.ImageData[2] == 0x46)
+                {
+                    contentType = "image/gif";
+                }
+            }
+
+            // Return image for display in browser/frontend
+            return File(invitationImage.ImageData, contentType);
+        }
+
         // POST: api/InvitationImage
         [HttpPost]
         [Consumes("multipart/form-data")]
