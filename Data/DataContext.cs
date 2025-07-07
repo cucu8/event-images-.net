@@ -20,13 +20,13 @@ namespace QrImageUploader.Data
         {
             modelBuilder.Entity<Image>()
                 .HasOne(i => i.User)
-                .WithMany(u => u.Images)
+                .WithMany()
                 .HasForeignKey(i => i.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Comment>()
                .HasOne(c => c.User)
-               .WithMany(u => u.Comments)
+               .WithMany()
                .HasForeignKey(c => c.UserId)
                .OnDelete(DeleteBehavior.Cascade);
 
@@ -39,7 +39,7 @@ namespace QrImageUploader.Data
 
             modelBuilder.Entity<Video>()
                 .HasOne(v => v.User)
-                .WithMany(u => u.Videos)
+                .WithMany()
                 .HasForeignKey(v => v.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
