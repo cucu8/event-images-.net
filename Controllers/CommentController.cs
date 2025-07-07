@@ -49,6 +49,7 @@ namespace resim_ekle.Controllers
             {
                 Id = comment.Id,
                 Content = comment.Content,
+                Name = comment.Name,
                 UserId = comment.UserId,
                 UserName = comment.User?.Name
             };
@@ -74,6 +75,7 @@ namespace resim_ekle.Controllers
             {
                 Id = comment.Id,
                 Content = comment.Content,
+                Name = comment.Name,
                 UserId = comment.UserId,
                 UserName = comment.User?.Name
             }).ToList();
@@ -94,7 +96,8 @@ namespace resim_ekle.Controllers
             
             var comment = new Comment
             {
-                Content = createCommentDto.Content, 
+                Content = createCommentDto.Content,
+                Name = createCommentDto.Name,
                 UserId = createCommentDto.UserId   
             };
 
@@ -106,6 +109,7 @@ namespace resim_ekle.Controllers
             {
                 Id = comment.Id,
                 Content = comment.Content,
+                Name = comment.Name,
                 UserId = comment.UserId,
                 UserName = user.Name
             };
