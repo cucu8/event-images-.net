@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using resim_ekle.Entities;
 
 
@@ -14,6 +14,7 @@ namespace QrImageUploader.Data
         public DbSet<Image> Images { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<InvitationImage> InvitationImages { get; set; }
+        public DbSet<Video> Videos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,9 +31,16 @@ namespace QrImageUploader.Data
                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<InvitationImage>()
+                .ToTable("InvitationImages")
                 .HasOne(ii => ii.User)
                 .WithOne(u => u.Invitation)
                 .HasForeignKey<InvitationImage>(ii => ii.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Video>()
+                .HasOne(v => v.User)
+                .WithMany(u => u.Videos)
+                .HasForeignKey(v => v.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(modelBuilder);

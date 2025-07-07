@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using QrImageUploader.Data;
@@ -11,9 +12,11 @@ using QrImageUploader.Data;
 namespace resim_ekle.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250705194340_FixInvitationImageTableName")]
+    partial class FixInvitationImageTableName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -130,45 +133,6 @@ namespace resim_ekle.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("resim_ekle.Entities.Video", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ContentType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("DurationSeconds")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<long>("FileSize")
-                        .HasColumnType("bigint");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<byte[]>("VideoData")
-                        .IsRequired()
-                        .HasColumnType("bytea");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Videos");
-                });
-
             modelBuilder.Entity("resim_ekle.Entities.Comment", b =>
                 {
                     b.HasOne("resim_ekle.Entities.User", "User")
@@ -202,17 +166,6 @@ namespace resim_ekle.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("resim_ekle.Entities.Video", b =>
-                {
-                    b.HasOne("resim_ekle.Entities.User", "User")
-                        .WithMany("Videos")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("resim_ekle.Entities.User", b =>
                 {
                     b.Navigation("Comments");
@@ -220,8 +173,6 @@ namespace resim_ekle.Migrations
                     b.Navigation("Images");
 
                     b.Navigation("Invitation");
-
-                    b.Navigation("Videos");
                 });
 #pragma warning restore 612, 618
         }

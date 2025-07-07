@@ -51,10 +51,29 @@ namespace resim_ekle.Controllers
 
         // POST: api/InvitationImage
         [HttpPost]
-        public async Task<ActionResult<InvitationImage>> PostInvitationImage([FromBody] CreateInvitationImageDTO createDto)
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult<InvitationImage>> PostInvitationImage(IFormFile imageFile, Guid userId)
         {
+            if (imageFile == null || imageFile.Length == 0)
+            {
+                return BadRequest("Image file is required");
+            }
+
+            // Validate file type
+            var allowedTypes = new[] { "image/jpeg", "image/jpg", "image/png", "image/gif" };
+            if (!allowedTypes.Contains(imageFile.ContentType.ToLower()))
+            {
+                return BadRequest("Only image files (JPEG, PNG, GIF) are allowed");
+            }
+
+            // Validate file size (max 5MB)
+            if (imageFile.Length > 5 * 1024 * 1024)
+            {
+                return BadRequest("File size cannot exceed 5MB");
+            }
+
             // Check if user exists
-            var user = await _context.Users.FindAsync(createDto.UserId);
+            var user = await _context.Users.FindAsync(userId);
             if (user == null)
             {
                 return BadRequest("User not found");
@@ -62,16 +81,24 @@ namespace resim_ekle.Controllers
 
             // Check if user already has an invitation image
             var existingInvitation = await _context.InvitationImages
-                .FirstOrDefaultAsync(ii => ii.UserId == createDto.UserId);
+                .FirstOrDefaultAsync(ii => ii.UserId == userId);
             if (existingInvitation != null)
             {
                 return BadRequest("User already has an invitation image");
             }
 
+            // Convert file to byte array
+            byte[] imageData;
+            using (var memoryStream = new MemoryStream())
+            {
+                await imageFile.CopyToAsync(memoryStream);
+                imageData = memoryStream.ToArray();
+            }
+
             var invitationImage = new InvitationImage
             {
-                ImageData = createDto.ImageData,
-                UserId = createDto.UserId,
+                ImageData = imageData,
+                UserId = userId,
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -83,15 +110,42 @@ namespace resim_ekle.Controllers
 
         // PUT: api/InvitationImage/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutInvitationImage(int id, [FromBody] CreateInvitationImageDTO updateDto)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> PutInvitationImage(int id, IFormFile imageFile)
         {
+            if (imageFile == null || imageFile.Length == 0)
+            {
+                return BadRequest("Image file is required");
+            }
+
+            // Validate file type
+            var allowedTypes = new[] { "image/jpeg", "image/jpg", "image/png", "image/gif" };
+            if (!allowedTypes.Contains(imageFile.ContentType.ToLower()))
+            {
+                return BadRequest("Only image files (JPEG, PNG, GIF) are allowed");
+            }
+
+            // Validate file size (max 5MB)
+            if (imageFile.Length > 5 * 1024 * 1024)
+            {
+                return BadRequest("File size cannot exceed 5MB");
+            }
+
             var invitationImage = await _context.InvitationImages.FindAsync(id);
             if (invitationImage == null)
             {
                 return NotFound();
             }
 
-            invitationImage.ImageData = updateDto.ImageData;
+            // Convert file to byte array
+            byte[] imageData;
+            using (var memoryStream = new MemoryStream())
+            {
+                await imageFile.CopyToAsync(memoryStream);
+                imageData = memoryStream.ToArray();
+            }
+
+            invitationImage.ImageData = imageData;
             
             try
             {
@@ -134,9 +188,5 @@ namespace resim_ekle.Controllers
         }
     }
 
-    public class CreateInvitationImageDTO
-    {
-        public byte[] ImageData { get; set; } = null!;
-        public Guid UserId { get; set; }
-    }
+
 }
