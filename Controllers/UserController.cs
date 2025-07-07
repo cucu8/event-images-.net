@@ -32,7 +32,7 @@ namespace resim_ekle.Controllers
                 return NotFound("Kullanıcı bulunamadı.");
             }
 
-            return Ok(new { user.Id, user.Name });
+            return Ok(new { user.Id, user.Name, user.LocationName, user.Latitude, user.Longitude });
         }
 
         [HttpPost]

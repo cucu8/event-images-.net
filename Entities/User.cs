@@ -15,6 +15,6 @@ namespace resim_ekle.Entities
         public string? LocationName { get; set; }    
         public double? Latitude { get; set; }     
         public double? Longitude { get; set; }
-        public bool IsDeleted { get; set; } = false;
+        public DateTime? InvitedAt { get; set; }
     }
 }

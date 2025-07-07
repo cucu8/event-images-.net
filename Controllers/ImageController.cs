@@ -61,6 +61,11 @@ namespace resim_ekle.Controllers
                 return BadRequest("Hiçbir dosya yüklenmedi.");
             }
 
+            if (files.Count > 5)
+            {
+                return BadRequest("Tek seferde maksimum 5 fotoğraf yükleyebilirsiniz.");
+            }
+
             var user = await _context.Users.FindAsync(userId);
             if (user == null)
             {
