@@ -25,10 +25,10 @@ namespace QrImageUploader.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Comment>()
-               .HasOne(c => c.User)
-               .WithMany()
-               .HasForeignKey(c => c.UserId)
-               .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(c => c.User)
+                .WithMany()
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<InvitationImage>()
                 .ToTable("InvitationImages")
