@@ -56,6 +56,31 @@ namespace resim_ekle.Controllers
             return Ok(commentDto);
         }
 
+        // GET: api/Comment/user/5
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<IEnumerable<ResponseCommentDTO>>> GetCommentsByUserId(Guid userId)
+        {
+            var comments = await _context.Comments
+                                         .Include(c => c.User)
+                                         .Where(c => c.UserId == userId)
+                                         .ToListAsync();
+
+            if (comments == null || !comments.Any())
+            {
+                return NotFound($"ID'si {userId} olan kullanıcıya ait yorum bulunamadı.");
+            }
+
+            var commentDtos = comments.Select(comment => new ResponseCommentDTO
+            {
+                Id = comment.Id,
+                Content = comment.Content,
+                UserId = comment.UserId,
+                UserName = comment.User?.Name
+            }).ToList();
+
+            return Ok(commentDtos);
+        }
+
         [HttpPost]
         public async Task<ActionResult<ResponseCommentDTO>> PostComment(CreateCommentDTO createCommentDto)
         {
