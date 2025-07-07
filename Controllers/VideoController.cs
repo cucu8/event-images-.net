@@ -137,5 +137,41 @@ namespace resim_ekle.Controllers
             return File(video.VideoData, video.ContentType, video.FileName);
         }
 
+        // GET: api/Video/user/{userId}/download
+        [HttpGet("user/{userId}/download")]
+        public async Task<IActionResult> DownloadUserVideos(Guid userId)
+        {
+            var videos = await _context.Videos
+                .Where(v => v.UserId == userId)
+                .ToListAsync();
+
+            if (videos == null || !videos.Any())
+            {
+                return NotFound("Bu kullanıcıya ait video bulunamadı.");
+            }
+
+            // Tek video varsa direkt döndür
+            if (videos.Count == 1)
+            {
+                var singleVideo = videos.First();
+                return File(singleVideo.VideoData, singleVideo.ContentType, singleVideo.FileName);
+            }
+
+            // Birden fazla video varsa ZIP olarak döndür
+            using var memoryStream = new MemoryStream();
+            using (var archive = new System.IO.Compression.ZipArchive(memoryStream, System.IO.Compression.ZipArchiveMode.Create, true))
+            {
+                foreach (var video in videos)
+                {
+                    var entry = archive.CreateEntry(video.FileName ?? $"video_{video.Id}.mp4");
+                    using var entryStream = entry.Open();
+                    await entryStream.WriteAsync(video.VideoData, 0, video.VideoData.Length);
+                }
+            }
+
+            memoryStream.Position = 0;
+            return File(memoryStream.ToArray(), "application/zip", $"user_{userId}_videos.zip");
+        }
+
     }
 }
