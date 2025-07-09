@@ -131,3 +131,10 @@ D:\resim-ekle\resim-ekle\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspa
 D:\resim-ekle\resim-ekle\obj\Debug\net8.0\resim-ekle.sourcelink.json
 D:\resim-ekle\resim-ekle\bin\Debug\net8.0\Npgsql.dll
 D:\resim-ekle\resim-ekle\bin\Debug\net8.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+D:\resim-ekle\resim-ekle\bin\Debug\net8.0\publish\web.config
+D:\resim-ekle\resim-ekle\bin\Debug\net8.0\appsettings.Production.json
+D:\resim-ekle\resim-ekle\bin\Debug\net8.0\publish\appsettings.Development.json
+D:\resim-ekle\resim-ekle\bin\Debug\net8.0\publish\appsettings.json
+D:\resim-ekle\resim-ekle\bin\Debug\net8.0\publish\resim-ekle.deps.json
+D:\resim-ekle\resim-ekle\bin\Debug\net8.0\publish\resim-ekle.runtimeconfig.json
+D:\resim-ekle\resim-ekle\bin\Debug\net8.0\publish\resim-ekle.staticwebassets.endpoints.json
